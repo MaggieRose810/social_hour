@@ -4,6 +4,11 @@ namespace :sample_data do
     Rake::Task["sample_data:create_sample_companies"].execute(args)
     Rake::Task["sample_data:create_sample_employees"].execute
     Rake::Task["sample_data:create_sample_employee_groups"].execute
+
+    client = Kafka.new([ENV["KAFKA_HOST"]], client_id: "social-hour-app")
+    Group.find_each do |group|
+      GroupMessage.new(group, client).deliver
+    end
   end
 
   desc 'create sample companies'
@@ -17,7 +22,7 @@ namespace :sample_data do
   task create_sample_employees: :environment do
     Company.find_each do |company|
       employees = 20.times.map do
-          company.employees.build(
+        company.employees.build(
           name: Faker::Name.first_name,
           email: Faker::Internet.email
         )
@@ -36,10 +41,9 @@ namespace :sample_data do
         end
 
         i = 0
-
-        company.employees.in_batches(of: Company::GROUP_SIZE) do |employees|
+        company.employees.shuffle.each_slice(Company::GROUP_SIZE) do |employees|
           group = groups[i] || groups.last
-          group.employees = employees
+          group.employees += employees
           i += 1
         end
       end
