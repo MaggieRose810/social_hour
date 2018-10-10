@@ -3,6 +3,7 @@ namespace :sample_data do
   task :create_all, [:count] => :environment do |t, args|
     Rake::Task["sample_data:create_sample_companies"].execute(args)
     Rake::Task["sample_data:create_sample_employees"].execute
+    Rake::Task["sample_data:create_sample_employee_groups"].execute
   end
 
   desc 'create sample companies'
@@ -22,6 +23,26 @@ namespace :sample_data do
         )
       end
       Employee.import(employees)
+    end
+  end
+
+  desc 'create sample employee_groups'
+  task create_sample_employee_groups: :environment do
+    weeks_of_data = 2
+    Company.find_each do |company|
+      weeks_of_data.times do |i|
+        groups = company.groups_per_week.times.map do
+          company.groups.create(event_at: i.weeks.ago)
+        end
+
+        i = 0
+
+        company.employees.in_batches(of: Company::GROUP_SIZE) do |employees|
+          group = groups[i] || groups.last
+          group.employees = employees
+          i += 1
+        end
+      end
     end
   end
 end
