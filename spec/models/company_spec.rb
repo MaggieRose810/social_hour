@@ -6,7 +6,10 @@ RSpec.describe Company, type: :model do
       company = build :company, name: nil
       expect(company).to be_invalid
     end
-
+    it "valid" do
+      company = build :company
+      expect(company).to be_valid
+    end
   end
 
 end
