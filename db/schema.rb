@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181010010721) do
+ActiveRecord::Schema.define(version: 20181010232810) do
 
   create_table "companies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name",       null: false
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20181010010721) do
     t.integer  "group_id",    null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.integer  "score"
     t.index ["employee_id"], name: "index_employee_groups_on_employee_id", using: :btree
     t.index ["group_id"], name: "index_employee_groups_on_group_id", using: :btree
   end
@@ -41,6 +42,7 @@ ActiveRecord::Schema.define(version: 20181010010721) do
     t.datetime "event_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "score"
     t.index ["company_id"], name: "index_groups_on_company_id", using: :btree
   end
 

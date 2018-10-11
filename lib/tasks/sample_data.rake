@@ -33,7 +33,7 @@ namespace :sample_data do
 
   desc 'create sample employee_groups'
   task create_sample_employee_groups: :environment do
-    weeks_of_data = 2
+    weeks_of_data = 20
     Company.find_each do |company|
       weeks_of_data.times do |i|
         groups = company.groups_per_week.times.map do
@@ -44,6 +44,7 @@ namespace :sample_data do
         company.employees.shuffle.each_slice(Company::GROUP_SIZE) do |employees|
           group = groups[i] || groups.last
           group.employees += employees
+          GroupScore.new(group).score
           i += 1
         end
       end
