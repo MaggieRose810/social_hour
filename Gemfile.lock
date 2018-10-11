@@ -59,6 +59,10 @@ GEM
     ffi (1.9.25)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
+    graphiql-rails (1.4.11)
+      railties
+      sprockets-rails
+    graphql (1.8.10)
     i18n (1.1.0)
       concurrent-ruby (~> 1.0)
     jaro_winkler (1.5.1)
@@ -171,6 +175,8 @@ DEPENDENCIES
   byebug
   factory_bot_rails (~> 4.0)
   faker
+  graphiql-rails
+  graphql
   listen (~> 3.0.5)
   mysql2 (>= 0.3.18, < 0.5)
   puma (~> 3.0)
