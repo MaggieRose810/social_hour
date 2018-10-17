@@ -26,7 +26,7 @@ namespace :sample_data do
   desc 'create sample employees'
   task create_sample_employees: :environment do
     Company.find_each do |company|
-      employees = 100.times.map do
+      employees = 20.times.map do
         company.employees.build(
           name: Faker::Name.first_name,
           email: Faker::Internet.email
@@ -38,10 +38,10 @@ namespace :sample_data do
 
   desc 'create sample employee_groups'
   task create_sample_employee_groups: :environment do
-    weeks_of_data = 10
+    weeks_of_data = 20
     Company.find_each do |company|
       weeks_of_data.times do |i|
-          rand_groups = CreateRandomGroups.new(company).create
+          rand_groups = CreateMinimallyPaired.new(company).create
           rand_groups.each do |group|
             GroupScore.new(group).score
           end
